@@ -8,17 +8,6 @@ CONV1_CHANNELS = 64
 CONV2_CHANNELS = 64
 DENSE_CHANNELS = 128
 
-from keras.models import Model
-from keras.utils import plot_model
-
-from keras.layers import Conv1D, Input, Activation, Dense, BatchNormalization, Lambda, Dropout
-from keras.layers.pooling import AveragePooling1D, MaxPooling1D
-from keras.layers.wrappers import TimeDistributed
-from keras.layers.merge import Add, Concatenate, Dot, Multiply
-
-import keras.backend as K
-
-
 def get_model(output_detail=False):
 
     # Inputs
@@ -102,14 +91,3 @@ def get_model(output_detail=False):
         name='opt_dense')(x)
     x = BatchNormalization(name='opt_bn')(x)
     x = Activation('sigmoid', name='opt_sigmoid')(x)
-
-    return Model(
-        inputs=[ipt_enhancer, ipt_promoter],
-        outputs=[x, enh_out, pro_out] if output_detail else [x]
-        )
-
-
-if __name__ == '__main__':
-    model = get_model()
-    model.summary()
-    plot_model(model, to_file='model.png', show_shapes=True, show_layer_names=True)
